@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kantin FT UNSOED – Pesan Sekarang</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --green-dark: #1a4a2e;
+      --green-main: #2d7a4f;
+      --green-mid: #3da066;
+      --green-light: #6dc98a;
+      --green-pale: #e8f7ee;
+      --gold: #f5c842;
+      --gold-light: #fdf3c0;
+      --red: #e84040;
+      --bg: #f6faf7;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --gray-light: #e5e7eb;
+      --text: #111827;
+      --shadow: 0 4px 24px rgba(45,122,79,0.10);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 60%, var(--green-mid) 100%);
+      padding: 28px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(245,200,66,0.15);
+    }
+    header::after {
+      content: '';
+      position: absolute; bottom: -40px; left: -40px;
+      width: 150px; height: 150px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+    .header-badge {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+    header h1 span { color: var(--gold); }
+    header p { color: rgba(255,255,255,0.75); margin-top: 8px; font-size: 0.95rem; }
+    .nav-link {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.25); }
+
+    /* TRACK ORDER BANNER */
+    .track-banner {
+      background: var(--gold-light);
+      border: 1.5px solid var(--gold);
+      border-radius: var(--radius);
+      margin: 20px 16px 0;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .track-banner .icon { font-size: 1.5rem; }
+    .track-banner p { font-size: 0.85rem; color: #7a5a00; }
+    .track-input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .track-input-row input {
+      flex: 1;
+      border: 1.5px solid var(--gold);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      background: #fff;
+      outline: none;
+    }
+    .track-input-row button {
+      background: var(--green-main);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    /* TRACK RESULT */
+    #trackResult {
+      margin: 12px 16px 0;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: none;
+    }
+    .track-result-inner { padding: 20px; }
+    .track-order-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1;
+    }
+    .track-order-number span { font-size: 0.9rem; font-weight: 500; color: var(--gray); display: block; }
+
+    /* MAIN */
+    main { padding: 20px 16px 120px; max-width: 480px; margin: 0 auto; }
+
+    /* SECTION TITLE */
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin: 24px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: var(--green-pale);
+      border-radius: 2px;
+    }
+
+    /* CATEGORY TABS */
+    .cat-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .cat-tabs::-webkit-scrollbar { display: none; }
+    .cat-tab {
+      flex-shrink: 0;
+      background: var(--white);
+      border: 1.5px solid var(--gray-light);
+      color: var(--gray);
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .cat-tab.active {
+      background: var(--green-main);
+      border-color: var(--green-main);
+      color: #fff;
+    }
+
+    /* MENU GRID */
+    .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .menu-card {
+      background: var(--white);
+      border: 1.5px solid var(--gray-light);
+      border-radius: var(--radius);
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.18s;
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-card:hover { border-color: var(--green-mid); box-shadow: 0 2px 12px rgba(45,122,79,0.12); }
+    .menu-card.selected {
+      border-color: var(--green-main);
+      background: var(--green-pale);
+    }
+    .menu-card .emoji { font-size: 1.8rem; margin-bottom: 6px; }
+    .menu-card .name { font-size: 0.85rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .menu-card .price { font-size: 0.9rem; font-weight: 700; color: var(--green-main); margin-top: 4px; }
+    .menu-card .qty-control {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .menu-card.selected .qty-control { display: flex; }
+    .qty-btn {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid var(--green-main);
+      background: var(--white);
+      color: var(--green-main);
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .qty-btn:hover { background: var(--green-main); color: #fff; }
+    .qty-num { font-weight: 700; font-size: 0.95rem; color: var(--text); min-width: 20px; text-align: center; }
+    .check-badge {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--green-main);
+      color: #fff;
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      font-size: 0.7rem;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .menu-card.selected .check-badge { display: flex; }
+
+    /* FORM */
+    .form-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%;
+      border: 1.5px solid var(--gray-light);
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.18s;
+      color: var(--text);
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--green-main); background: var(--white); }
+    textarea { resize: vertical; min-height: 70px; }
+
+    /* PAYMENT OPTIONS */
+    .payment-options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .pay-opt {
+      border: 2px solid var(--gray-light);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .pay-opt:hover { border-color: var(--green-mid); }
+    .pay-opt.selected { border-color: var(--green-main); background: var(--green-pale); }
+    .pay-opt .pay-icon { font-size: 1.4rem; }
+    .pay-opt .pay-name { font-size: 0.72rem; font-weight: 600; color: var(--text); margin-top: 4px; }
+    .pay-opt.selected .pay-name { color: var(--green-dark); }
+
+    /* ORDER SUMMARY */
+    .summary-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .summary-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--gray-light);
+      font-size: 0.88rem;
+    }
+    .summary-item:last-child { border-bottom: none; }
+    .summary-item .item-name { color: var(--text); }
+    .summary-item .item-price { font-weight: 600; color: var(--green-main); }
+    .total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 12px; margin-top: 4px;
+      border-top: 2px solid var(--green-pale);
+    }
+    .total-label { font-size: 0.9rem; font-weight: 700; color: var(--green-dark); }
+    .total-price { font-size: 1.2rem; font-weight: 800; color: var(--green-dark); font-family: 'Outfit', sans-serif; }
+    .empty-cart { text-align: center; color: var(--gray); font-size: 0.85rem; padding: 20px 0; }
+
+    /* SUBMIT BUTTON */
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--green-main), var(--green-mid));
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(45,122,79,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(45,122,79,0.4); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* STATUS BADGE */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-processing { background: #dbeafe; color: #1e3a8a; }
+    .status-completed { background: #dcfce7; color: #166534; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+    /* SUCCESS MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100;
+      display: none; align-items: center; justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 32px 28px;
+      text-align: center;
+      max-width: 340px;
+      width: 100%;
+      animation: popIn 0.3s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .modal-emoji { font-size: 3.5rem; margin-bottom: 12px; }
+    .modal-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      line-height: 1;
+    }
+    .modal-number-label { font-size: 0.85rem; color: var(--gray); margin-bottom: 8px; }
+    .modal h2 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .modal p { font-size: 0.88rem; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
+    .modal-btn {
+      background: var(--green-main);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 28px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--green-dark);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      z-index: 200;
+      transition: transform 0.3s;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* CART FLOAT */
+    .cart-float {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--green-main);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 58px; height: 58px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(45,122,79,0.45);
+      display: none; align-items: center; justify-content: center;
+      z-index: 50;
+    }
+    .cart-float.show { display: flex; }
+    .cart-count {
+      position: absolute; top: -2px; right: -2px;
+      background: var(--gold);
+      color: var(--green-dark);
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="/admin.html" class="nav-link">🔒 Admin</a>
+  <div class="header-badge">Universitas Jenderal Soedirman</div>
+  <h1>Kantin <span>FT</span> UNSOED</h1>
+  <p>Pesan makanan & minuman langsung dari mejamu 🍽️</p>
+</header>
+
+<!-- TRACK ORDER -->
+<div class="track-banner">
+  <div class="icon">🔍</div>
+  <div style="flex:1">
+    <p style="font-weight:600;margin-bottom:4px">Cek Status Pesananmu</p>
+    <p>Masukkan nomor antrian untuk melihat status pesanan</p>
+    <div class="track-input-row">
+      <input type="text" id="trackInput" placeholder="Contoh: 001" maxlength="3"/>
+      <button onclick="trackOrder()">Cek</button>
+    </div>
+  </div>
+</div>
+<div id="trackResult"></div>
+
+<main>
+  <!-- MENU -->
+  <div class="section-title">🍱 Menu Pilihan</div>
+  <div class="cat-tabs">
+    <div class="cat-tab active" onclick="filterMenu('all',this)">Semua</div>
+    <div class="cat-tab" onclick="filterMenu('makanan',this)">🍛 Makanan</div>
+    <div class="cat-tab" onclick="filterMenu('minuman',this)">🥤 Minuman</div>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+
+  <!-- RINGKASAN -->
+  <div class="section-title">🧾 Ringkasan Pesanan</div>
+  <div class="summary-card">
+    <div id="summaryItems"><div class="empty-cart">Belum ada item yang dipilih</div></div>
+    <div class="total-row">
+      <span class="total-label">Total</span>
+      <span class="total-price" id="totalPrice">Rp 0</span>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="section-title">📝 Data Pemesan</div>
+  <div class="form-card">
+    <div class="form-group">
+      <label>Nama Lengkap *</label>
+      <input type="text" id="customerName" placeholder="Nama kamu..."/>
+    </div>
+    <div class="form-group">
+      <label>Nomor HP / WhatsApp *</label>
+      <input type="tel" id="phone" placeholder="08xx-xxxx-xxxx"/>
+    </div>
+    <div class="form-group">
+      <label>Lokasi / Meja *</label>
+      <input type="text" id="location" placeholder="Contoh: Meja 5, Lantai 2, dll."/>
+    </div>
+    <div class="form-group">
+      <label>Catatan Tambahan</label>
+      <textarea id="notes" placeholder="Misal: pedas sedang, tanpa kecap..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Metode Pembayaran *</label>
+      <div class="payment-options">
+        <div class="pay-opt" onclick="selectPayment('QRIS', this)">
+          <div class="pay-icon">📱</div>
+          <div class="pay-name">QRIS</div>
+        </div>
+        <div class="pay-opt" onclick="selectPayment('DANA', this)">
+          <div class="pay-icon">💙</div>
+          <div class="pay-name">DANA</div>
+        </div>
+        <div class="pay-opt" onclick="selectPayment('Transfer Bank', this)">
+          <div class="pay-icon">🏦</div>
+          <div class="pay-name">Transfer Bank</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="submit-btn" onclick="submitOrder()">
+    🛒 Pesan Sekarang
+  </button>
+</main>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="modal-emoji">🎉</div>
+    <div class="modal-number-label">Nomor Antrian Kamu</div>
+    <div class="modal-number" id="modalOrderNum">—</div>
+    <h2 style="margin-top:12px">Pesanan Diterima!</h2>
+    <p id="modalMsg">Pesananmu sedang kami proses. Catat nomor antrian di atas untuk cek status!</p>
+    <button class="modal-btn" onclick="closeModal()">Oke, Siap! 👍</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = '';
+
+const menuData = [
+  { id:1, name:'Nasi Rames', price:10000, cat:'makanan', emoji:'🍛' },
+  { id:2, name:'Nasi Goreng', price:12000, cat:'makanan', emoji:'🍳' },
+  { id:3, name:'Nasi Orak-Arik', price:10000, cat:'makanan', emoji:'🥘' },
+  { id:4, name:'Nasi Omlet', price:11000, cat:'makanan', emoji:'🍳' },
+  { id:5, name:'Nasi Nugget', price:10000, cat:'makanan', emoji:'🍚' },
+  { id:6, name:'Soto Ayam', price:10000, cat:'makanan', emoji:'🍲' },
+  { id:7, name:'Kupat Tahu', price:10000, cat:'makanan', emoji:'🥗' },
+  { id:8, name:'Mendoan', price:8000, cat:'makanan', emoji:'🟫' },
+  { id:9, name:'Opor Ayam', price:10000, cat:'makanan', emoji:'🍗' },
+  { id:10, name:'Gecot Tahu', price:10000, cat:'makanan', emoji:'🫙' },
+  { id:11, name:'Ketoprak', price:10000, cat:'makanan', emoji:'🥗' },
+  { id:12, name:'Gado-gado/Pecel', price:10000, cat:'makanan', emoji:'🥜' },
+  { id:13, name:'Mie Ayam', price:10000, cat:'makanan', emoji:'🍜' },
+  { id:14, name:'Mie Rebus', price:10000, cat:'makanan', emoji:'🍜' },
+  { id:15, name:'Mie Goreng', price:10000, cat:'makanan', emoji:'🍝' },
+  { id:16, name:'Magelangan', price:13000, cat:'makanan', emoji:'🍛' },
+  { id:17, name:'Es Jeruk', price:5000, cat:'minuman', emoji:'🍊' },
+  { id:18, name:'Es Teh', price:3000, cat:'minuman', emoji:'🧊' },
+  { id:19, name:'Es Cappucino', price:5000, cat:'minuman', emoji:'☕' },
+  { id:20, name:'Es Capcin', price:5000, cat:'minuman', emoji:'🥤' },
+  { id:21, name:'Es Good Day', price:5000, cat:'minuman', emoji:'☕' },
+  { id:22, name:'Pop Ice', price:5000, cat:'minuman', emoji:'🧃' },
+  { id:23, name:'Es Nutrisari', price:3000, cat:'minuman', emoji:'🟡' },
+  { id:24, name:'Kopi Panas', price:5000, cat:'minuman', emoji:'☕' },
+  { id:25, name:'Teh Panas', price:3000, cat:'minuman', emoji:'🍵' },
+  { id:26, name:'Jeruk Panas', price:5000, cat:'minuman', emoji:'🍊' },
+  { id:27, name:'Extra Joss', price:5000, cat:'minuman', emoji:'⚡' },
+  { id:28, name:'Kukubima', price:5000, cat:'minuman', emoji:'💪' },
+];
+
+let cart = {};
+let selectedPayment = '';
+let currentFilter = 'all';
+
+function formatRp(n) { return 'Rp ' + n.toLocaleString('id-ID'); }
+
+function renderMenu(filter='all') {
+  const grid = document.getElementById('menuGrid');
+  const items = filter === 'all' ? menuData : menuData.filter(m => m.cat === filter);
+  grid.innerHTML = items.map(item => {
+    const qty = cart[item.id]?.qty || 0;
+    return `<div class="menu-card ${qty > 0 ? 'selected':''}" id="card-${item.id}" onclick="toggleItem(${item.id})">
+      <div class="check-badge">✓</div>
+      <div class="emoji">${item.emoji}</div>
+      <div class="name">${item.name}</div>
+      <div class="price">${formatRp(item.price)}</div>
+      <div class="qty-control" onclick="event.stopPropagation()">
+        <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+        <span class="qty-num">${qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterMenu(cat, el) {
+  currentFilter = cat;
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderMenu(cat);
+}
+
+function toggleItem(id) {
+  if (cart[id]) { delete cart[id]; }
+  else { cart[id] = { ...menuData.find(m => m.id === id), qty: 1 }; }
+  renderMenu(currentFilter);
+  updateSummary();
+}
+
+function changeQty(id, delta) {
+  if (!cart[id]) return;
+  cart[id].qty += delta;
+  if (cart[id].qty <= 0) delete cart[id];
+  renderMenu(currentFilter);
+  updateSummary();
+}
+
+function updateSummary() {
+  const items = Object.values(cart);
+  const container = document.getElementById('summaryItems');
+  const total = items.reduce((s, i) => s + i.price * i.qty, 0);
+  if (items.length === 0) {
+    container.innerHTML = '<div class="empty-cart">Belum ada item yang dipilih</div>';
+  } else {
+    container.innerHTML = items.map(i => `
+      <div class="summary-item">
+        <span class="item-name">${i.emoji} ${i.name} ×${i.qty}</span>
+        <span class="item-price">${formatRp(i.price * i.qty)}</span>
+      </div>`).join('');
+  }
+  document.getElementById('totalPrice').textContent = formatRp(total);
+  const cartFloat = document.getElementById('cartFloat');
+  const totalItems = items.reduce((s,i) => s + i.qty, 0);
+  if (totalItems > 0) {
+    cartFloat.classList.add('show');
+    document.getElementById('cartCount').textContent = totalItems;
+  } else {
+    cartFloat.classList.remove('show');
+  }
+}
+
+function selectPayment(method, el) {
+  selectedPayment = method;
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+async function submitOrder() {
+  const name = document.getElementById('customerName').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const notes = document.getElementById('notes').value.trim();
+  const items = Object.values(cart);
+
+  if (!name) return showToast('⚠️ Masukkan nama lengkap');
+  if (!phone) return showToast('⚠️ Masukkan nomor HP');
+  if (!location) return showToast('⚠️ Masukkan lokasi/meja');
+  if (items.length === 0) return showToast('⚠️ Pilih minimal 1 menu');
+  if (!selectedPayment) return showToast('⚠️ Pilih metode pembayaran');
+
+  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
+  const btn = document.querySelector('.submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Memproses...';
+
+  try {
+    const res = await fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        customerName: name, phone, location, notes,
+        items: items.map(i => ({ name: i.name, price: i.price, qty: i.qty, emoji: i.emoji })),
+        paymentMethod: selectedPayment,
+        totalPrice: total
+      })
+    });
+    const order = await res.json();
+    if (!res.ok) throw new Error(order.error);
+
+    document.getElementById('modalOrderNum').textContent = '#' + order.orderNumber;
+    document.getElementById('modalMsg').textContent =
+      `Halo ${name}! Pesananmu sudah masuk. Bayar via ${order.paymentMethod}. Catat nomor antrian ini ya!`;
+    document.getElementById('successModal').classList.add('show');
+
+    // Reset
+    cart = {};
+    selectedPayment = '';
+    renderMenu(currentFilter);
+    updateSummary();
+    document.getElementById('customerName').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('location').value = '';
+    document.getElementById('notes').value = '';
+    document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  } catch(e) {
+    showToast('❌ Gagal mengirim pesanan: ' + e.message);
+  }
+  btn.disabled = false;
+  btn.innerHTML = '🛒 Pesan Sekarang';
+}
+
+async function trackOrder() {
+  const num = document.getElementById('trackInput').value.trim().padStart(3,'0');
+  if (!num) return;
+  try {
+    const res = await fetch('/api/orders/track/' + num);
+    const order = await res.json();
+    const result = document.getElementById('trackResult');
+    if (!res.ok) {
+      result.style.display = 'block';
+      result.innerHTML = `<div class="track-result-inner"><p style="color:var(--red);font-weight:600">❌ Pesanan #${num} tidak ditemukan</p></div>`;
+      return;
+    }
+    const statusMap = {
+      pending: { label:'Menunggu', class:'status-pending', icon:'⏳' },
+      processing: { label:'Diproses', class:'status-processing', icon:'👨‍🍳' },
+      completed: { label:'Selesai', class:'status-completed', icon:'✅' },
+      cancelled: { label:'Dibatalkan', class:'status-cancelled', icon:'❌' },
+    };
+    const s = statusMap[order.status];
+    result.style.display = 'block';
+    result.innerHTML = `<div class="track-result-inner">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <div>
+          <span style="font-size:0.78rem;color:var(--gray);">Nomor Antrian</span>
+          <div class="track-order-number">#${order.orderNumber}</div>
+        </div>
+        <span class="status-badge ${s.class}">${s.icon} ${s.label}</span>
+      </div>
+      <p style="font-size:0.85rem;color:var(--gray);">👤 ${order.customerName} &nbsp;|&nbsp; 📍 ${order.location}</p>
+      <p style="font-size:0.85rem;margin-top:6px;color:var(--gray);">💳 ${order.paymentMethod} &nbsp;|&nbsp; 🕐 ${new Date(order.createdAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</p>
+      <div style="margin-top:10px;background:var(--bg);border-radius:10px;padding:10px">
+        ${order.items.map(i=>`<div style="font-size:0.85rem;display:flex;justify-content:space-between;padding:3px 0"><span>${i.emoji||'🍽️'} ${i.name} ×${i.qty}</span><span style="font-weight:600">Rp ${(i.price*i.qty).toLocaleString('id-ID')}</span></div>`).join('')}
+        <div style="border-top:1.5px solid var(--gray-light);margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-weight:700;font-size:0.9rem">
+          <span>Total</span><span style="color:var(--green-main)">Rp ${order.totalPrice.toLocaleString('id-ID')}</span>
+        </div>
+      </div>
+    </div>`;
+  } catch(e) { showToast('Gagal mengecek pesanan'); }
+}
+
+function closeModal() { document.getElementById('successModal').classList.remove('show'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+renderMenu();
+updateSummary();
+</script>
+
+<button class="cart-float" id="cartFloat" onclick="document.querySelector('.summary-card').scrollIntoView({behavior:'smooth'})">
+  🛒
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+</body>
+</html>
