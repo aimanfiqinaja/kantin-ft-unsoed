@@ -2,185 +2,82 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin Login – Kantin FT UNSOED</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Login Admin – Kantin FT UNSOED</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --g1:#0f3b22;--g2:#1e6b3e;--g3:#2d9a5a;--g4:#3dbf70;
-  --gold:#f5c518;--red:#ef4444;
-  --bg:#0d1f13;--card:#ffffff;
-  --t1:#0d1f13;--t2:#374151;--t3:#6b7280;
-  --border:#e2ede7;--pale:#edf7f1;
-}
+:root{--g1:#0f3b22;--g2:#1e6b3e;--g3:#2d9a5a;--gold:#f5c518;--red:#ef4444;--t1:#0d1f13;--t2:#374151;--t3:#6b7280;--border:#e2ede7;--pale:#edf7f1;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);color:var(--t1);
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:20px;
-  background:linear-gradient(145deg,#0d1f13 0%,#0f3b22 50%,#1a2f1f 100%);
-  position:relative;overflow:hidden;
-}
-.bg-blob{position:absolute;border-radius:50%;pointer-events:none;}
-.bg-blob1{width:400px;height:400px;background:rgba(45,154,90,0.08);top:-100px;right:-100px;}
-.bg-blob2{width:300px;height:300px;background:rgba(245,197,24,0.05);bottom:-80px;left:-80px;}
-.bg-blob3{width:200px;height:200px;background:rgba(61,191,112,0.06);top:40%;left:10%;}
-
-.login-card{
-  background:var(--card);border-radius:22px;
-  padding:36px 32px;width:100%;max-width:400px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.4);
-  position:relative;z-index:1;
-  animation:slideUp .4s ease;
-}
-@keyframes slideUp{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-
-.login-logo{text-align:center;margin-bottom:28px;}
-.logo-icon{
-  width:64px;height:64px;border-radius:18px;margin:0 auto 12px;
-  background:linear-gradient(135deg,var(--g2),var(--g3));
-  display:flex;align-items:center;justify-content:center;
-  font-size:2rem;box-shadow:0 6px 20px rgba(30,107,62,0.4);
-}
-.login-logo h1{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;color:var(--g1);}
-.login-logo h1 span{color:var(--g2);}
-.login-logo p{font-size:0.8rem;color:var(--t3);margin-top:3px;}
-.admin-chip{
-  display:inline-block;background:var(--pale);color:var(--g2);
-  font-size:0.72rem;font-weight:700;letter-spacing:.8px;
-  padding:4px 12px;border-radius:20px;border:1px solid var(--border);
-  text-transform:uppercase;margin-top:8px;
-}
-
-.form-group{margin-bottom:16px;}
-label{display:block;font-size:0.82rem;font-weight:700;color:var(--t2);margin-bottom:7px;}
-.input-wrap{position:relative;}
-.input-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none;}
-input{
-  width:100%;border:1.5px solid #d1d5db;border-radius:10px;
-  padding:12px 13px 12px 38px;
-  font-family:inherit;font-size:0.9rem;background:#f9fafb;outline:none;
-  transition:all .2s;color:var(--t1);
-}
-input:focus{border-color:var(--g3);background:#fff;box-shadow:0 0 0 3px rgba(45,154,90,0.12);}
-
-.eye-btn{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  background:none;border:none;cursor:pointer;font-size:1rem;color:var(--t3);
-  padding:2px;
-}
-
-.login-btn{
-  width:100%;background:linear-gradient(135deg,var(--g2),var(--g3));
-  color:#fff;border:none;border-radius:11px;
-  padding:13px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;
-  cursor:pointer;margin-top:6px;transition:all .2s;
-  box-shadow:0 4px 16px rgba(30,107,62,0.35);
-}
-.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,107,62,0.45);}
-.login-btn:active{transform:scale(0.98);}
-
-.err-msg{
-  background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;
-  padding:10px 14px;font-size:0.84rem;color:#b91c1c;font-weight:600;
-  margin-bottom:14px;display:none;text-align:center;
-}
-.err-msg.show{display:block;}
-
-.login-footer{
-  text-align:center;margin-top:20px;padding-top:16px;
-  border-top:1px solid #f3f4f6;
-}
-.login-footer a{
-  color:var(--t3);font-size:0.8rem;text-decoration:none;
-  display:flex;align-items:center;justify-content:center;gap:5px;
-  transition:color .2s;
-}
-.login-footer a:hover{color:var(--g2);}
-
+body{font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(145deg,#0d1f13 0%,#0f3b22 50%,#1a2f1f 100%);position:relative;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;pointer-events:none;}
+.b1{width:400px;height:400px;background:rgba(45,154,90,.08);top:-100px;right:-100px;}
+.b2{width:300px;height:300px;background:rgba(245,197,24,.05);bottom:-80px;left:-80px;}
+.b3{width:200px;height:200px;background:rgba(61,191,112,.06);top:40%;left:10%;}
+.card{background:#fff;border-radius:22px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.4);position:relative;z-index:1;animation:up .4s ease;}
+@keyframes up{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.logo{text-align:center;margin-bottom:28px;}
+.logo-icon{width:64px;height:64px;border-radius:18px;margin:0 auto 12px;background:linear-gradient(135deg,var(--g2),var(--g3));display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 6px 20px rgba(30,107,62,.4);}
+.logo h1{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;color:var(--g1);}
+.logo h1 span{color:var(--g2);}
+.logo p{font-size:.8rem;color:var(--t3);margin-top:3px;}
+.chip{display:inline-block;background:var(--pale);color:var(--g2);font-size:.72rem;font-weight:700;letter-spacing:.8px;padding:4px 12px;border-radius:20px;border:1px solid var(--border);text-transform:uppercase;margin-top:8px;}
+.fg{margin-bottom:16px;}
+label{display:block;font-size:.82rem;font-weight:700;color:var(--t2);margin-bottom:7px;}
+.iw{position:relative;}
+.ii{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:1rem;pointer-events:none;}
+input{width:100%;border:1.5px solid #d1d5db;border-radius:10px;padding:12px 13px 12px 38px;font-family:inherit;font-size:.9rem;background:#f9fafb;outline:none;transition:all .2s;color:var(--t1);}
+input:focus{border-color:var(--g3);background:#fff;box-shadow:0 0 0 3px rgba(45,154,90,.12);}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--t3);padding:2px;}
+.btn{width:100%;background:linear-gradient(135deg,var(--g2),var(--g3));color:#fff;border:none;border-radius:11px;padding:13px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;margin-top:6px;transition:all .2s;box-shadow:0 4px 16px rgba(30,107,62,.35);}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,107,62,.45);}
+.btn:active{transform:scale(.98);}
+.err{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;font-size:.84rem;color:#b91c1c;font-weight:600;margin-bottom:14px;display:none;text-align:center;}
+.err.show{display:block;}
+.foot{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;}
+.foot a{color:var(--t3);font-size:.8rem;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:5px;transition:color .2s;}
+.foot a:hover{color:var(--g2);}
 .shake{animation:shake .4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}50%{transform:translateX(6px);}}
 </style>
 </head>
 <body>
-<div class="bg-blob bg-blob1"></div>
-<div class="bg-blob bg-blob2"></div>
-<div class="bg-blob bg-blob3"></div>
-
-<div class="login-card" id="loginCard">
-  <div class="login-logo">
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="card" id="card">
+  <div class="logo">
     <div class="logo-icon">🍽️</div>
     <h1>Kantin <span>FT</span> UNSOED</h1>
     <p>Sistem Manajemen Kantin</p>
-    <div class="admin-chip">🔒 Area Admin</div>
+    <div class="chip">🔒 Area Admin</div>
   </div>
-
-  <div class="err-msg" id="errMsg">❌ Username atau password salah!</div>
-
-  <div class="form-group">
+  <div class="err" id="err">❌ Username atau password salah!</div>
+  <div class="fg">
     <label>Username</label>
-    <div class="input-wrap">
-      <span class="input-icon">👤</span>
-      <input type="text" id="username" placeholder="Masukkan username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/>
-    </div>
+    <div class="iw"><span class="ii">👤</span><input type="text" id="usr" placeholder="Masukkan username" autocomplete="username" onkeydown="if(event.key==='Enter')login()"/></div>
   </div>
-  <div class="form-group">
+  <div class="fg">
     <label>Password</label>
-    <div class="input-wrap">
-      <span class="input-icon">🔑</span>
-      <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
-      <button class="eye-btn" onclick="togglePw()" id="eyeBtn">👁</button>
-    </div>
+    <div class="iw"><span class="ii">🔑</span><input type="password" id="pw" placeholder="Masukkan password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"/><button class="eye" onclick="togglePw()" id="eye">👁</button></div>
   </div>
-
-  <button class="login-btn" onclick="doLogin()">Masuk ke Dashboard</button>
-
-  <div class="login-footer">
-    <a href="index.html">← Kembali ke halaman pemesanan</a>
-  </div>
+  <button class="btn" onclick="login()">Masuk ke Dashboard</button>
+  <div class="foot"><a href="index.html">← Kembali ke halaman pemesanan</a></div>
 </div>
-
+<script src="supabase-config.js"></script>
 <script>
-// Kredensial admin (dalam produksi sebaiknya di server)
-const ADMIN_CREDENTIALS = [
-  { username: 'admin', password: 'kantin123' },
-  { username: 'ftadmin', password: 'unsoed2024' }
-];
-const SESSION_KEY = 'kftu_admin_session';
-
-// Cek jika sudah login
-if(localStorage.getItem(SESSION_KEY) === 'authenticated') {
-  window.location.href = 'dashboard.html';
-}
-
-function doLogin(){
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value;
-  const err = document.getElementById('errMsg');
-  const card = document.getElementById('loginCard');
-
-  const valid = ADMIN_CREDENTIALS.find(c => c.username === u && c.password === p);
-  if(valid){
-    localStorage.setItem(SESSION_KEY, 'authenticated');
-    localStorage.setItem('kftu_admin_user', u);
-    window.location.href = 'dashboard.html';
-  } else {
-    err.classList.add('show');
-    card.classList.remove('shake');
-    void card.offsetWidth;
-    card.classList.add('shake');
-    document.getElementById('password').value = '';
-    setTimeout(()=>err.classList.remove('show'), 3000);
+const SK='kftu_sess', UK='kftu_user';
+if(localStorage.getItem(SK)==='ok')location.href='dashboard.html';
+function login(){
+  const u=document.getElementById('usr').value.trim();
+  const p=document.getElementById('pw').value;
+  const ok=ADMIN_CREDENTIALS.find(c=>c.username===u&&c.password===p);
+  if(ok){localStorage.setItem(SK,'ok');localStorage.setItem(UK,u);location.href='dashboard.html';}
+  else{
+    const e=document.getElementById('err');e.classList.add('show');
+    const c=document.getElementById('card');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
+    document.getElementById('pw').value='';
+    setTimeout(()=>e.classList.remove('show'),3000);
   }
 }
-
-function togglePw(){
-  const pw = document.getElementById('password');
-  const btn = document.getElementById('eyeBtn');
-  if(pw.type === 'password'){ pw.type = 'text'; btn.textContent = '🙈'; }
-  else { pw.type = 'password'; btn.textContent = '👁'; }
-}
+function togglePw(){const p=document.getElementById('pw'),e=document.getElementById('eye');p.type=p.type==='password'?'text':'password';e.textContent=p.type==='password'?'👁':'🙈';}
 </script>
 </body>
 </html>
