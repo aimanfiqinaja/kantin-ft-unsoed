@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard Admin – Kantin FT UNSOED</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g1:#0f3b22;--g2:#1e6b3e;--g3:#2d9a5a;--g4:#3dbf70;
+  --pale:#edf7f1;--gold:#f5c518;--gold2:#fde68a;
+  --red:#ef4444;--orange:#f97316;--blue:#3b82f6;--purple:#8b5cf6;
+  --bg:#f3f8f5;--sidebar:#0f1f13;--card:#ffffff;
+  --t1:#0d1f13;--t2:#374151;--t3:#6b7280;--t4:#9ca3af;
+  --border:#e2ede7;--border2:#c9dfd3;
+  --shadow:0 2px 12px rgba(30,107,62,0.09);
+  --shadow2:0 6px 24px rgba(30,107,62,0.14);
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:230px;background:var(--sidebar);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:30;
+  transition:transform .3s ease;
+}
+.sidebar-logo{padding:22px 18px 18px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.logo-row{display:flex;align-items:center;gap:11px;}
+.logo-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--g2),var(--g3));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.logo-text h2{font-family:'Outfit',sans-serif;color:#fff;font-size:0.95rem;font-weight:700;}
+.logo-text h2 span{color:var(--gold);}
+.logo-text p{color:rgba(255,255,255,0.35);font-size:0.7rem;margin-top:1px;}
+.admin-chip-s{background:rgba(245,197,24,.15);border:1px solid rgba(245,197,24,.25);color:var(--gold);font-size:0.68rem;font-weight:700;letter-spacing:.6px;padding:3px 8px;border-radius:6px;text-transform:uppercase;margin-top:10px;display:inline-block;}
+
+.sidebar-nav{padding:14px 10px;flex:1;overflow-y:auto;}
+.nav-section-title{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.25);letter-spacing:1px;text-transform:uppercase;padding:8px 8px 4px;margin-top:8px;}
+.nav-btn{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:10px 10px;border-radius:10px;
+  background:none;border:none;color:rgba(255,255,255,0.5);
+  font-family:inherit;font-size:0.85rem;font-weight:500;
+  cursor:pointer;transition:all .18s;margin-bottom:2px;text-align:left;
+}
+.nav-btn:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}
+.nav-btn.active{background:rgba(45,154,90,0.25);color:#fff;font-weight:600;}
+.nav-btn .nav-icon{width:22px;text-align:center;font-size:1rem;flex-shrink:0;}
+.nav-badge{margin-left:auto;background:rgba(245,197,24,.25);color:var(--gold);font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:10px;}
+
+.sidebar-footer{padding:14px 10px;border-top:1px solid rgba(255,255,255,0.07);}
+.user-row{display:flex;align-items:center;gap:9px;padding:8px 8px;border-radius:10px;background:rgba(255,255,255,0.05);margin-bottom:8px;}
+.user-avatar{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--g3),var(--g4));display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;}
+.user-info p{font-size:0.8rem;font-weight:600;color:#fff;}
+.user-info span{font-size:0.68rem;color:rgba(255,255,255,0.35);}
+.logout-btn{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:9px 10px;border-radius:9px;
+  background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.15);
+  color:#fca5a5;font-family:inherit;font-size:0.82rem;font-weight:600;
+  cursor:pointer;transition:all .18s;
+}
+.logout-btn:hover{background:rgba(239,68,68,0.2);color:#fff;}
+
+/* ── MOBILE TOP BAR ── */
+.mobile-topbar{
+  display:none;
+  position:fixed;top:0;left:0;right:0;z-index:20;
+  background:var(--sidebar);padding:12px 16px;
+  align-items:center;justify-content:space-between;
+  box-shadow:0 2px 10px rgba(0,0,0,0.3);
+}
+.mobile-logo{font-family:'Outfit',sans-serif;color:#fff;font-size:0.95rem;font-weight:700;}
+.mobile-logo span{color:var(--gold);}
+.hamburger{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:4px;}
+
+/* ── SIDEBAR OVERLAY ── */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:29;}
+
+/* ── MAIN ── */
+.main{margin-left:230px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.page{display:none;padding:24px 20px 40px;animation:fadeIn .25s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── PAGE HEADER ── */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;}
+.page-title{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:var(--t1);}
+.page-sub{font-size:0.8rem;color:var(--t3);margin-top:2px;}
+.refresh-btn{background:var(--card);border:1.5px solid var(--border2);border-radius:9px;padding:8px 14px;font-family:inherit;font-size:0.82rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .18s;color:var(--t2);}
+.refresh-btn:hover{border-color:var(--g3);color:var(--g2);}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;}
+.stat-card{background:var(--card);border-radius:var(--r);padding:16px 14px;box-shadow:var(--shadow);border:1.5px solid var(--border);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;opacity:.06;}
+.stat-card.c-all::before{background:var(--g3);}
+.stat-card.c-pend::before{background:var(--gold);}
+.stat-card.c-proc::before{background:var(--blue);}
+.stat-card.c-done::before{background:var(--g3);}
+.stat-card.c-rev::before{background:var(--purple);}
+.stat-icon{font-size:1.3rem;margin-bottom:8px;}
+.stat-val{font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:800;color:var(--t1);line-height:1;}
+.stat-val.rev{font-size:1.1rem;color:var(--g2);}
+.stat-lbl{font-size:0.74rem;color:var(--t3);margin-top:4px;font-weight:600;}
+.stat-trend{font-size:0.72rem;margin-top:6px;}
+.trend-up{color:#16a34a;}.trend-down{color:var(--red);}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.filter-chip{padding:7px 13px;border-radius:20px;border:1.5px solid var(--border2);background:var(--card);color:var(--t3);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.filter-chip.active{background:var(--g1);color:#fff;border-color:var(--g1);}
+.filter-chip .fc{background:rgba(255,255,255,0.2);border-radius:4px;padding:1px 5px;font-size:0.7rem;}
+.filter-chip:not(.active) .fc{background:var(--pale);color:var(--g2);}
+.search-in{flex:1;min-width:160px;border:1.5px solid var(--border2);border-radius:9px;padding:8px 13px;font-family:inherit;font-size:0.85rem;background:var(--card);outline:none;transition:border-color .2s;color:var(--t1);}
+.search-in:focus{border-color:var(--g3);}
+
+/* ── ORDERS TABLE ── */
+.table-card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);border:1.5px solid var(--border);overflow:hidden;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{background:#f6faf7;padding:11px 13px;text-align:left;font-size:0.72rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);white-space:nowrap;}
+td{padding:13px 13px;font-size:0.83rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#f9fcfa;}
+.onum{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:800;color:var(--g1);}
+.cname{font-weight:600;font-size:0.85rem;}
+.csub{font-size:0.75rem;color:var(--t3);margin-top:2px;}
+.iprev{font-size:0.78rem;color:var(--t3);max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pcell{font-weight:700;color:var(--g2);white-space:nowrap;font-size:0.85rem;}
+.tcell{font-size:0.75rem;color:var(--t3);white-space:nowrap;}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:20px;font-size:0.74rem;font-weight:700;white-space:nowrap;}
+.b-pending{background:#fef9c3;color:#854d0e;}
+.b-processing{background:#dbeafe;color:#1d4ed8;}
+.b-completed{background:#dcfce7;color:#15803d;}
+.b-cancelled{background:#fee2e2;color:#b91c1c;}
+
+/* ── ACTION BUTTONS ── */
+.ag{display:flex;gap:4px;flex-wrap:wrap;}
+.ab{padding:5px 10px;border-radius:6px;border:none;font-family:inherit;font-size:0.73rem;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.ab-view{background:#f3f4f6;color:#374151;} .ab-view:hover{background:#e5e7eb;}
+.ab-proc{background:#dbeafe;color:#1e40af;} .ab-proc:hover{background:#3b82f6;color:#fff;}
+.ab-done{background:#dcfce7;color:#15803d;} .ab-done:hover{background:#22c55e;color:#fff;}
+.ab-canc{background:#fef3c7;color:#b45309;} .ab-canc:hover{background:#f59e0b;color:#fff;}
+.ab-del{background:#fee2e2;color:#b91c1c;} .ab-del:hover{background:var(--red);color:#fff;}
+
+/* ── EMPTY STATE ── */
+.empty{text-align:center;padding:48px 20px;color:var(--t4);}
+.empty .big{font-size:2.5rem;margin-bottom:10px;}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:100;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px);}
+.overlay.show{display:flex;}
+.modal{background:var(--card);border-radius:20px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:pop .25s ease;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mhdr{padding:18px 20px;border-bottom:1.5px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:var(--card);z-index:1;}
+.mhdr h3{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:700;}
+.mclose{background:var(--bg);border:none;border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.mbody{padding:18px 20px;}
+.dr{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.84rem;}
+.dr:last-child{border-bottom:none;}
+.dl{color:var(--t3);min-width:95px;font-weight:500;}
+.dv{font-weight:600;flex:1;}
+.items-box{background:var(--bg);border-radius:9px;padding:11px;margin:10px 0;}
+.item-r{display:flex;justify-content:space-between;font-size:0.81rem;padding:2px 0;}
+.mactions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1.5px solid var(--border);}
+.mab{flex:1;min-width:80px;padding:9px 8px;border-radius:9px;border:none;font-family:inherit;font-size:0.83rem;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;}
+
+/* ── REPORTS ── */
+.report-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+@media(max-width:560px){.report-grid{grid-template-columns:1fr;}}
+.report-card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1.5px solid var(--border);}
+.rc-title{font-size:0.8rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+.menu-rank{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);}
+.menu-rank:last-child{border-bottom:none;}
+.rank-num{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;color:var(--t4);width:20px;}
+.rank-name{font-size:0.83rem;font-weight:600;flex:1;}
+.rank-bar-wrap{width:80px;height:6px;background:var(--pale);border-radius:3px;}
+.rank-bar{height:100%;border-radius:3px;background:linear-gradient(to right,var(--g3),var(--g4));}
+.rank-count{font-size:0.78rem;font-weight:700;color:var(--g2);width:30px;text-align:right;}
+.hour-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;margin-top:8px;}
+.hour-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.hour-bar-outer{width:100%;height:50px;background:var(--pale);border-radius:3px;display:flex;align-items:flex-end;overflow:hidden;}
+.hour-bar-inner{width:100%;background:linear-gradient(to top,var(--g2),var(--g3));border-radius:3px;transition:height .5s ease;}
+.hour-lbl{font-size:0.55rem;color:var(--t4);}
+.pay-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+.pay-row:last-child{border-bottom:none;}
+.pay-name{font-size:0.83rem;font-weight:600;flex:1;}
+.pay-bar-wrap{width:80px;height:7px;background:var(--pale);border-radius:4px;}
+.pay-bar{height:100%;border-radius:4px;background:linear-gradient(to right,var(--blue),#60a5fa);}
+.pay-pct{font-size:0.78rem;font-weight:700;color:var(--blue);width:35px;text-align:right;}
+.summary-full{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);border:1.5px solid var(--border);}
+.sf-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:0.85rem;}
+.sf-row:last-child{border-bottom:none;font-weight:700;font-size:0.95rem;}
+.sf-row .sf-val{font-weight:600;color:var(--g2);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:16px;background:var(--g1);color:#fff;padding:11px 18px;border-radius:10px;font-size:0.84rem;font-weight:600;z-index:200;opacity:0;transform:translateY(8px);transition:all .3s;max-width:calc(100vw - 32px);}
+.toast.show{opacity:1;transform:translateY(0);}
+
+/* ── MOBILE RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay.show{display:block;}
+  .main{margin-left:0;padding-top:58px;}
+  .mobile-topbar{display:flex;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .page{padding:16px 14px 40px;}
+  .page-header{margin-bottom:14px;}
+  table{font-size:0.8rem;}
+  th,td{padding:10px 10px;}
+  .ag{gap:3px;}
+  .ab{padding:4px 7px;font-size:0.69rem;}
+}
+@media(max-width:420px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .stat-val{font-size:1.4rem;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-row">
+      <div class="logo-icon">🍽️</div>
+      <div class="logo-text">
+        <h2>Kantin <span>FT</span></h2>
+        <p>UNSOED</p>
+      </div>
+    </div>
+    <div class="admin-chip-s">🔒 Admin Panel</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Menu</div>
+    <button class="nav-btn active" onclick="showPage('orders',this)">
+      <span class="nav-icon">📋</span> Pesanan <span class="nav-badge" id="pendingBadge">0</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('reports',this)">
+      <span class="nav-icon">📊</span> Laporan & Analisis
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-row">
+      <div class="user-avatar">👤</div>
+      <div class="user-info">
+        <p id="adminUsername">admin</p>
+        <span>Administrator</span>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">🚪 Keluar (Logout)</button>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <button class="hamburger" onclick="openSidebar()">☰</button>
+  <span class="mobile-logo">Kantin <span>FT</span> UNSOED</span>
+  <button class="hamburger" onclick="doLogout()" title="Logout">🚪</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- PAGE: ORDERS -->
+  <div class="page active" id="page-orders">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Manajemen Pesanan</div>
+        <div class="page-sub" id="lastUpdated">Memuat...</div>
+      </div>
+      <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card c-all"><div class="stat-icon">📋</div><div class="stat-val" id="st-total">0</div><div class="stat-lbl">Total Pesanan</div></div>
+      <div class="stat-card c-pend"><div class="stat-icon">⏳</div><div class="stat-val" id="st-pend">0</div><div class="stat-lbl">Menunggu</div></div>
+      <div class="stat-card c-proc"><div class="stat-icon">👨‍🍳</div><div class="stat-val" id="st-proc">0</div><div class="stat-lbl">Diproses</div></div>
+      <div class="stat-card c-done"><div class="stat-icon">✅</div><div class="stat-val" id="st-done">0</div><div class="stat-lbl">Selesai</div></div>
+      <div class="stat-card c-rev"><div class="stat-icon">💰</div><div class="stat-val rev" id="st-rev">Rp 0</div><div class="stat-lbl">Pendapatan Hari Ini</div></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="filter-chip active" onclick="setFilter('all',this)" id="tab-all">Semua <span class="fc" id="cnt-all">0</span></div>
+      <div class="filter-chip" onclick="setFilter('pending',this)" id="tab-pending">⏳ Menunggu <span class="fc" id="cnt-pending">0</span></div>
+      <div class="filter-chip" onclick="setFilter('processing',this)" id="tab-processing">👨‍🍳 Diproses <span class="fc" id="cnt-processing">0</span></div>
+      <div class="filter-chip" onclick="setFilter('completed',this)" id="tab-completed">✅ Selesai <span class="fc" id="cnt-completed">0</span></div>
+      <div class="filter-chip" onclick="setFilter('cancelled',this)" id="tab-cancelled">❌ Dibatal <span class="fc" id="cnt-cancelled">0</span></div>
+      <input class="search-in" type="text" id="searchIn" placeholder="🔍 Cari nama / antrian..." oninput="renderOrders()"/>
+    </div>
+
+    <div class="table-card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Antrian</th><th>Pemesan</th><th>Item</th>
+              <th>Total</th><th>Bayar</th><th>Status</th><th>Waktu</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: REPORTS -->
+  <div class="page" id="page-reports">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Laporan & Analisis</div>
+        <div class="page-sub">Statistik performa kantin</div>
+      </div>
+      <button class="refresh-btn" onclick="renderReports()">↻ Refresh</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-full" style="margin-bottom:16px" id="reportSummary"></div>
+
+    <div class="report-grid">
+      <!-- Menu Terlaris -->
+      <div class="report-card">
+        <div class="rc-title">🏆 Menu Terlaris</div>
+        <div id="menuRank"></div>
+      </div>
+      <!-- Pembayaran -->
+      <div class="report-card">
+        <div class="rc-title">💳 Metode Pembayaran</div>
+        <div id="payStats"></div>
+      </div>
+      <!-- Jam Ramai -->
+      <div class="report-card" style="grid-column:1/-1">
+        <div class="rc-title">🕐 Jam Tersibuk (Hari Ini)</div>
+        <div class="hour-grid" id="hourChart"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px">
+          <span style="font-size:0.7rem;color:var(--t4)">00:00</span>
+          <span style="font-size:0.7rem;color:var(--t4)">12:00</span>
+          <span style="font-size:0.7rem;color:var(--t4)">23:59</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="detailModal">
+  <div class="modal">
+    <div class="mhdr">
+      <h3 id="modalTitle">Detail Pesanan</h3>
+      <button class="mclose" onclick="closeModal()">✕</button>
+    </div>
+    <div class="mbody" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── AUTH ──
+const SESSION='kftu_admin_session';
+if(localStorage.getItem(SESSION)!=='authenticated'){window.location.href='admin.html';}
+document.getElementById('adminUsername').textContent=localStorage.getItem('kftu_admin_user')||'admin';
+
+function doLogout(){
+  if(!confirm('Yakin ingin keluar?'))return;
+  localStorage.removeItem(SESSION);
+  localStorage.removeItem('kftu_admin_user');
+  window.location.href='admin.html';
+}
+
+// ── DB ──
+const DB='kftu_orders';
+const getOrders=()=>{try{return JSON.parse(localStorage.getItem(DB)||'[]');}catch{return[];}};
+const saveOrders=o=>{try{localStorage.setItem(DB,JSON.stringify(o));return true;}catch(e){toast('❌ Gagal menyimpan: '+e.message);return false;}};
+
+let allOrders=[], curFilter='all';
+const rp=n=>'Rp '+n.toLocaleString('id-ID');
+const sMap={
+  pending:{lbl:'Menunggu',cls:'b-pending',ic:'⏳'},
+  processing:{lbl:'Diproses',cls:'b-processing',ic:'👨‍🍳'},
+  completed:{lbl:'Selesai',cls:'b-completed',ic:'✅'},
+  cancelled:{lbl:'Dibatalkan',cls:'b-cancelled',ic:'❌'},
+};
+function ft(iso){const d=new Date(iso);return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});}
+
+// ── NAV ──
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  if(id==='reports')renderReports();
+  closeSidebar();
+}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('show');}
+
+// ── LOAD ──
+function loadAll(){
+  allOrders=getOrders();
+  const today=new Date().toDateString();
+  const pending=allOrders.filter(o=>o.status==='pending').length;
+  const processing=allOrders.filter(o=>o.status==='processing').length;
+  const completed=allOrders.filter(o=>o.status==='completed').length;
+  const cancelled=allOrders.filter(o=>o.status==='cancelled').length;
+  const todayOrders=allOrders.filter(o=>new Date(o.createdAt).toDateString()===today);
+  const rev=todayOrders.filter(o=>o.status==='completed').reduce((s,o)=>s+o.totalPrice,0);
+
+  document.getElementById('st-total').textContent=allOrders.length;
+  document.getElementById('st-pend').textContent=pending;
+  document.getElementById('st-proc').textContent=processing;
+  document.getElementById('st-done').textContent=completed;
+  document.getElementById('st-rev').textContent=rp(rev);
+  document.getElementById('pendingBadge').textContent=pending;
+  ['all','pending','processing','completed','cancelled'].forEach(s=>{
+    const cnt=s==='all'?allOrders.length:allOrders.filter(o=>o.status===s).length;
+    document.getElementById('cnt-'+s).textContent=cnt;
+  });
+  document.getElementById('lastUpdated').textContent='Diperbarui: '+new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  renderOrders();
+}
+
+function setFilter(f,el){
+  curFilter=f;
+  document.querySelectorAll('.filter-chip').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  renderOrders();
+}
+
+function renderOrders(){
+  const q=document.getElementById('searchIn').value.toLowerCase();
+  let list=curFilter==='all'?allOrders:allOrders.filter(o=>o.status===curFilter);
+  if(q)list=list.filter(o=>o.customerName.toLowerCase().includes(q)||o.orderNumber.includes(q)||o.phone.includes(q));
+  const tbody=document.getElementById('ordersBody');
+  if(!list.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="big">📭</div><p>Tidak ada pesanan</p></div></td></tr>`;return;}
+  tbody.innerHTML=list.map(o=>{
+    const s=sMap[o.status];
+    const ip=o.items.map(i=>`${i.name}×${i.qty}`).join(', ');
+    const cp=o.status==='pending', cc=o.status==='processing', cn=['pending','processing'].includes(o.status);
+    return`<tr>
+      <td><span class="onum">#${o.orderNumber}</span></td>
+      <td><div class="cname">${o.customerName}</div><div class="csub">📱${o.phone}</div><div class="csub">📍${o.location}</div></td>
+      <td><div class="iprev" title="${ip}">${ip}</div></td>
+      <td class="pcell">${rp(o.totalPrice)}</td>
+      <td><div style="font-size:.75rem">💳${o.paymentMethod}</div></td>
+      <td><span class="badge ${s.cls}">${s.ic}${s.lbl}</span></td>
+      <td class="tcell">${ft(o.createdAt)}</td>
+      <td><div class="ag">
+        <button class="ab ab-view" onclick="showDetail('${o.id}')">👁</button>
+        ${cp?`<button class="ab ab-proc" onclick="upStatus('${o.id}','processing')">Proses</button>`:''}
+        ${cc?`<button class="ab ab-done" onclick="upStatus('${o.id}','completed')">Selesai</button>`:''}
+        ${cn?`<button class="ab ab-canc" onclick="upStatus('${o.id}','cancelled')">Batal</button>`:''}
+        <button class="ab ab-del" onclick="delOrder('${o.id}')">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ACTIONS ── dengan error handling yang baik
+function upStatus(id,status){
+  try{
+    const orders=getOrders();
+    const idx=orders.findIndex(o=>o.id===id);
+    if(idx===-1){toast('❌ Pesanan tidak ditemukan');return;}
+    orders[idx].status=status;
+    orders[idx].updatedAt=new Date().toISOString();
+    if(!saveOrders(orders)){return;}
+    const lbl={processing:'👨‍🍳 Sedang Diproses',completed:'✅ Pesanan Selesai',cancelled:'❌ Pesanan Dibatalkan'};
+    toast(lbl[status]||'Status diperbarui');
+    loadAll();closeModal();
+  }catch(e){toast('❌ Error: '+e.message);}
+}
+
+function delOrder(id){
+  if(!confirm('Hapus pesanan ini secara permanen?'))return;
+  try{
+    const orders=getOrders().filter(o=>o.id!==id);
+    if(!saveOrders(orders))return;
+    toast('🗑 Pesanan dihapus');
+    loadAll();closeModal();
+  }catch(e){toast('❌ Error: '+e.message);}
+}
+
+function showDetail(id){
+  const o=allOrders.find(o=>o.id===id);
+  if(!o)return;
+  const s=sMap[o.status];
+  const cp=o.status==='pending',cc=o.status==='processing',cn=['pending','processing'].includes(o.status);
+  document.getElementById('modalTitle').textContent=`Pesanan #${o.orderNumber}`;
+  document.getElementById('modalBody').innerHTML=`
+    <div class="dr"><span class="dl">No. Antrian</span><span class="dv" style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:var(--g1)">#${o.orderNumber}</span></div>
+    <div class="dr"><span class="dl">Status</span><span class="dv"><span class="badge ${s.cls}">${s.ic} ${s.lbl}</span></span></div>
+    <div class="dr"><span class="dl">Nama</span><span class="dv">${o.customerName}</span></div>
+    <div class="dr"><span class="dl">Nomor HP</span><span class="dv">${o.phone}</span></div>
+    <div class="dr"><span class="dl">Lokasi</span><span class="dv">${o.location}</span></div>
+    <div class="dr"><span class="dl">Pembayaran</span><span class="dv">${o.paymentMethod}</span></div>
+    <div class="dr"><span class="dl">Waktu</span><span class="dv">${ft(o.createdAt)}</span></div>
+    ${o.notes?`<div class="dr"><span class="dl">Catatan</span><span class="dv">${o.notes}</span></div>`:''}
+    <div style="margin-top:10px"><p style="font-size:0.74rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">Item Pesanan</p>
+    <div class="items-box">
+      ${o.items.map(i=>`<div class="item-r"><span>${i.emoji||'🍽️'} ${i.name} ×${i.qty}</span><span style="font-weight:600">${rp(i.price*i.qty)}</span></div>`).join('')}
+      <div style="border-top:1px dashed var(--border);margin-top:6px;padding-top:6px;display:flex;justify-content:space-between;font-weight:700;font-size:.88rem">
+        <span>Total</span><span style="color:var(--g2)">${rp(o.totalPrice)}</span>
+      </div>
+    </div></div>
+    <div class="mactions">
+      ${cp?`<button class="mab ab-proc" onclick="upStatus('${o.id}','processing')">👨‍🍳 Proses</button>`:''}
+      ${cc?`<button class="mab ab-done" onclick="upStatus('${o.id}','completed')">✅ Selesai</button>`:''}
+      ${cn?`<button class="mab ab-canc" onclick="upStatus('${o.id}','cancelled')">❌ Batalkan</button>`:''}
+      <button class="mab ab-del" onclick="delOrder('${o.id}')">🗑 Hapus</button>
+    </div>`;
+  document.getElementById('detailModal').classList.add('show');
+}
+function closeModal(){document.getElementById('detailModal').classList.remove('show');}
+
+// ── REPORTS ──
+function renderReports(){
+  const orders=getOrders();
+  const today=new Date().toDateString();
+  const todayO=orders.filter(o=>new Date(o.createdAt).toDateString()===today);
+  const done=orders.filter(o=>o.status==='completed');
+  const todayDone=todayO.filter(o=>o.status==='completed');
+  const rev=done.reduce((s,o)=>s+o.totalPrice,0);
+  const todayRev=todayDone.reduce((s,o)=>s+o.totalPrice,0);
+  const avgOrder=done.length?Math.round(rev/done.length):0;
+
+  // Summary
+  document.getElementById('reportSummary').innerHTML=`
+    <div class="rc-title">📈 Ringkasan Keseluruhan</div>
+    <div class="sf-row"><span>Total Pesanan Masuk</span><span class="sf-val">${orders.length} pesanan</span></div>
+    <div class="sf-row"><span>Pesanan Selesai</span><span class="sf-val">${done.length} pesanan</span></div>
+    <div class="sf-row"><span>Pesanan Dibatalkan</span><span class="sf-val">${orders.filter(o=>o.status==='cancelled').length} pesanan</span></div>
+    <div class="sf-row"><span>Pendapatan Hari Ini</span><span class="sf-val" style="color:var(--g2)">${rp(todayRev)}</span></div>
+    <div class="sf-row"><span>Total Pendapatan</span><span class="sf-val" style="color:var(--g2)">${rp(rev)}</span></div>
+    <div class="sf-row"><span>Rata-rata per Pesanan</span><span class="sf-val">${rp(avgOrder)}</span></div>`;
+
+  // Menu terlaris
+  const menuCount={};
+  done.forEach(o=>o.items.forEach(i=>{
+    const k=i.name;
+    if(!menuCount[k])menuCount[k]={name:k,qty:0,rev:0,emoji:i.emoji||'🍽️'};
+    menuCount[k].qty+=i.qty;menuCount[k].rev+=i.price*i.qty;
+  }));
+  const topMenu=Object.values(menuCount).sort((a,b)=>b.qty-a.qty).slice(0,8);
+  const maxQ=topMenu[0]?.qty||1;
+  document.getElementById('menuRank').innerHTML=topMenu.length===0
+    ?'<p style="color:var(--t4);font-size:.83rem;text-align:center;padding:16px">Belum ada data</p>'
+    :topMenu.map((m,i)=>`<div class="menu-rank">
+      <span class="rank-num">${i+1}</span>
+      <span class="rank-name">${m.emoji} ${m.name}</span>
+      <div class="rank-bar-wrap"><div class="rank-bar" style="width:${Math.round(m.qty/maxQ*100)}%"></div></div>
+      <span class="rank-count">${m.qty}</span>
+    </div>`).join('');
+
+  // Pembayaran
+  const payCount={};
+  orders.forEach(o=>{if(!payCount[o.paymentMethod])payCount[o.paymentMethod]=0;payCount[o.paymentMethod]++;});
+  const payTotal=orders.length||1;
+  const payArr=Object.entries(payCount).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('payStats').innerHTML=payArr.length===0
+    ?'<p style="color:var(--t4);font-size:.83rem;text-align:center;padding:16px">Belum ada data</p>'
+    :payArr.map(([name,cnt])=>`<div class="pay-row">
+      <span class="pay-name">${name}</span>
+      <div class="pay-bar-wrap"><div class="pay-bar" style="width:${Math.round(cnt/payTotal*100)}%"></div></div>
+      <span class="pay-pct">${Math.round(cnt/payTotal*100)}%</span>
+    </div>`).join('');
+
+  // Jam tersibuk (24 jam dibagi 2 = 12 kolom, masing-masing 2 jam)
+  const hourBuckets=Array(12).fill(0);
+  todayO.forEach(o=>{
+    const h=new Date(o.createdAt).getHours();
+    hourBuckets[Math.floor(h/2)]++;
+  });
+  const maxH=Math.max(...hourBuckets,1);
+  document.getElementById('hourChart').innerHTML=hourBuckets.map((n,i)=>`
+    <div class="hour-bar-wrap">
+      <div class="hour-bar-outer">
+        <div class="hour-bar-inner" style="height:${Math.round(n/maxH*100)}%"></div>
+      </div>
+      <span class="hour-lbl">${String(i*2).padStart(2,'0')}</span>
+    </div>`).join('');
+}
+
+// ── TOAST ──
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// Init
+loadAll();
+setInterval(loadAll,8000);
+</script>
+</body>
+</html>
